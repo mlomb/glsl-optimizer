@@ -100,6 +100,7 @@ struct metal_print_context
 	, uniformStr(ralloc_strdup(buffer, ""))
 	, paramsStr(ralloc_strdup(buffer, ""))
 	, typedeclStr(ralloc_strdup(buffer, ""))
+	, structsStr(ralloc_strdup(buffer, ""))
 	, writingParams(false)
 	, matrixCastsDone(false)
 	, matrixConstructorsDone(false)
@@ -119,6 +120,7 @@ struct metal_print_context
 	string_buffer uniformStr;
 	string_buffer paramsStr;
 	string_buffer typedeclStr;
+	string_buffer structsStr;
 	bool writingParams;
 	bool matrixCastsDone;
 	bool matrixConstructorsDone;
@@ -270,6 +272,10 @@ _mesa_print_ir_metal(exec_list *instructions,
 		
 		if (ir->ir_type == ir_type_typedecl) {
 			strOut = &ctx.typedeclStr;
+        }
+		else if (ir->ir_type == ir_type_typedecl)
+		{
+			strOut = &ctx.structsStr;
 		}
 
 		ir_print_metal_visitor v (ctx, *strOut, &gtracker, mode, state);
@@ -337,6 +343,7 @@ _mesa_print_ir_metal(exec_list *instructions,
 
 	ctx.prefixStr.asprintf_append("%s", ctx.inputStr.c_str());
 	ctx.prefixStr.asprintf_append("%s", ctx.outputStr.c_str());
+	ctx.prefixStr.asprintf_append("%s", ctx.structsStr.c_str());
 	ctx.prefixStr.asprintf_append("%s", ctx.uniformStr.c_str());
 	ctx.prefixStr.asprintf_append("%s", ctx.str.c_str());
 

@@ -471,11 +471,20 @@ void ir_print_glsl_visitor::visit_uniform_block( ir_variable* ir )
   default: packing = nullptr;  break;
   }
 
+  bool row_major = ir->data.matrix_layout == GLSL_MATRIX_LAYOUT_ROW_MAJOR;
+
   // TODO: handle explicit locations and bindings within layout expression for uniform blocks.
   // that does not appear to be getting preserved.
-  if ( packing )
+  if ( packing || row_major )
   {
-    buffer.asprintf_append( "layout(%s) ", packing );
+	buffer.asprintf_append( "layout(" );
+	if (packing) {
+	  buffer.asprintf_append( "%s", packing );
+	}
+	if (row_major) {
+	  buffer.asprintf_append( ", row_major" );
+	}
+	buffer.asprintf_append( ") " );
   }
 
   buffer.asprintf_append( "uniform %s {\n", itype->name );

@@ -459,6 +459,9 @@ _mesa_exec_malloc( GLuint size );
 extern void 
 _mesa_exec_free( void *addr );
 
+#define FFS_DEFINED 1
+#define HAVE___BUILTIN_FFS 1
+#define HAVE___BUILTIN_FFSLL 1
 
 #ifndef FFS_DEFINED
 #define FFS_DEFINED 1
